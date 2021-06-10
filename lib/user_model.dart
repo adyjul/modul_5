@@ -2,34 +2,40 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class User{
-  String email;
-  String name;
+  String nama;
+  String harga;
 
-  User({this.email, this.name});
+  User({this.nama, this.harga});
 
   //mapping data json 
   factory User.createUser(Map <String,dynamic> object){
       return User(
-        email : object['email'],
-        name : object['first_name'] + object['last_name']
+        nama : object['nama_product'],
+        harga : object['harga']
       );      
   }
 
   //connect to API
-   static Future<User> connectToAPI(String id) async {
-      String urlAPI = "https://reqres.in/api/users/"+id;
+   static Future<List<User>> connectToAPI() async {
+      String urlAPI = "http://127.0.0.1:8000/api/product/";
       
       //data still get 
       var jsonObject = await http.get(urlAPI);
 
       //assumption data succeed from http request
       var resultJson = json.decode(jsonObject.body);
+      
+      List<dynamic> listUser = (jsonObject as Map<String,dynamic>)['data'];
+
+      List<User> users = [];
+      for(int i=0; i< listUser.length; i++)
+      users.add(User.createUser(listUser[i]));
 
       //data is object of object therefore data on parsing
-      var userData = (resultJson as Map<String,dynamic>)['data'];
-      
+      // var userData = (resultJson as Map<String,dynamic>)['data'];
+      // print(userData);
       //parsing data in method above
-      return User.createUser(userData);
+      return users;
 
    }  
 }

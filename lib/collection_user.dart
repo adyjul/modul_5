@@ -5,15 +5,17 @@ class UserData{
   String id;
   String name;
   String email;
+  String avatar;
 
-  UserData({this.id, this.name, this.email});
+  UserData({this.id, this.name, this.email, this.avatar});
 
   //mapping data from json
   factory UserData.createUserData(Map <String,dynamic> object){
       return UserData(
         id : object['id'].toString(),
         name : object['first_name']+" "+object['last_name'],
-        email : object['email']
+        email : object['email'],
+        avatar : object['avatar']
       );
   }
 
